@@ -173,7 +173,7 @@ curl "https://13-222-58-121.sslip.io/convert?lbs=0"     # 0.000
 
 ## Cleanup (Cost Hygiene)
 
-> **Service status:** Project resources was cleaned up. Screenshots in `screenshots/` show correct behavior.
+> **Service status:** Project resources were cleaned up. Screenshots in `screenshots/` show correct behavior. The screenshots for cleanup are attached in DESIGN.md.
 
 ### What I cleaned up
 - Closed inbound ports **8080/80/443** in the Security Group (SSH 22 only from my IP).
