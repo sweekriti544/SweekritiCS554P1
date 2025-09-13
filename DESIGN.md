@@ -1,13 +1,7 @@
 # DESIGN.md — CS554 Project 1: EC2 REST (lbs → kg)
 
-## 1) Overview & Goals
-This project deploys a minimal REST service on AWS EC2 that converts pounds (lbs) to kilograms (kg). The service returns JSON with correct rounding (3 decimals) and input validation (400 on missing/invalid `lbs`, 422 on negative/non-finite). Secondary goals: secure provisioning (least privilege, tight Security Groups), reliable operation via service management, basic logging, and reproducible documentation. Optional enhancements include reverse proxying through NGINX and HTTPS via Let’s Encrypt.  
-**Stack:** Node.js (Express + Morgan) managed by **systemd**; **NGINX** on port 80 as a reverse proxy; optional TLS using **sslip.io** + **Certbot**.  
-**Public endpoints**  
-- Direct app (8080): `http://13.222.58.121:8080/convert?lbs=150`  
-- Via NGINX (80): `http://13.222.58.121/convert?lbs=150`  
-- HTTPS (optional): `https://13-222-58-121.sslip.io/convert?lbs=150`  — I used the free hostname `13-222-58-121.sslip.io` from sslip.io, which resolves to `13.222.58.121`; this met Let’s Encrypt’s hostname requirement and allowed issuing a valid TLS certificate without buying a domain.
-
+### 1) Overview & Goals
+This project deploys a small REST API on AWS EC2 that converts pounds (lbs) to kilograms (kg). It returns JSON, rounding results to **three decimals**. Inputs are validated: if `lbs` is missing or not a number, the API returns **400 Bad Request**; if `lbs` is negative or not finite (NaN/Infinity), it returns **422 Unprocessable Entity **. The build focuses on secure setup (least-privilege user, tight Security Groups), reliable operation (managed by systemd), basic logging, and clear, reproducible setup docs. Optional extras include placing **NGINX** in front as a reverse proxy and enabling **HTTPS** with Let’s Encrypt (via an `sslip.io` hostname).
 ---
 
 ## 2) Architecture
@@ -46,8 +40,9 @@ This project deploys a minimal REST service on AWS EC2 that converts pounds (lbs
 ## 4) Implementation
 The service exposes a single route, `GET /convert?lbs=<number>`. It computes kilograms with the formula `kg = lbs * 0.45359237`, rounds the result to three decimals, and returns JSON in the shape `{ "lbs": <number>, "kg": <number>, "formula": "kg = lbs * 0.45359237" }`. Inputs are validated: if `lbs` is missing or not a number the API returns **400 Bad Request**; if `lbs` is negative or not finite (NaN/Infinity) it returns **422 Unprocessable Entity**.
 
-Requests are logged by Express using Morgan; logs go to stdout and are collected/rotated by the OS via systemd-journald—no custom log files are created. The app runs as the non-root `ec2-user` under **systemd**, set to restart on failure and start at boot. It listens on `0.0.0.0:8080`, while **NGINX** listens on port 80 and proxies to `127.0.0.1:8080`. For HTTPS, the hostname `13-222-58-121.sslip.io` maps to the instance IP, allowing **Certbot** to obtain a Let’s Encrypt certificate; NGINX then terminates TLS on port 443.
+**Logging & service management:** Express (via Morgan) writes one line per request to standard output. systemd-journald automatically captures those lines into the OS “journal” and rotates them-i.e., it keeps recent logs and, when size/time limits are reached, it compresses or discards older entries so logs don’t grow forever. No app-specific log files are created. The app runs as the non-root ec2-user under systemd; it’s enabled to start at boot and configured with Restart=always, so if the process crashes or the VM reboots, systemd brings it back. 
 
+**Networking:** the app listens on 0.0.0.0:8080; NGINX listens on port 80 and forwards requests to 127.0.0.1:8080. For HTTPS, 13-222-58-121.sslip.io maps to the instance IP so Certbot can obtain a Let’s Encrypt certificate; NGINX then terminates TLS on port 443.
 
 ---
 
@@ -67,13 +62,19 @@ Requests are logged by Express using Morgan; logs go to stdout and are collected
 
 ---
 
-## 7) Rationale
-**Stack:** Node.js (Express + Morgan) running under **systemd**; **NGINX** on port 80 reverse-proxies to `127.0.0.1:8080`; optional HTTPS via **Certbot** using an **sslip.io** hostname.
+## 7) Design Decisions
+- **Why this stack:** Node.js/Express is quick to build a single GET endpoint; Morgan gives simple access logs; **systemd** keeps the service running through failures and reboots.
+- **Why NGINX:** It’s the public front door on **80/443** and forwards to the app on **127.0.0.1:8080**, so HTTPS/networking stays at the edge while the app only handles lbs→kg logic.
+- **Why sslip.io + Certbot:** `sslip.io` turns the IP `13.222.58.121` into a free hostname `13-222-58-121.sslip.io`. Let’s Encrypt requires a hostname, so this enables a real TLS cert without buying a domain.
+- **Security posture:** Runs as non-root `ec2-user`; Security Group opens only what’s needed during testing.
+- **Cost hygiene:** Cleaning up—closing ports, terminating the instance, and deleting the project Key Pair and any orphaned EBS volumes—prevents ongoing charges.
 
-**Public endpoints**
-- Direct app (8080): `http://13.222.58.121:8080/convert?lbs=150`
+**Stack:** Node.js (Express + Morgan) under **systemd**; **NGINX** on port 80 proxying to `127.0.0.1:8080`; optional HTTPS via **Certbot** using an **sslip.io** hostname.
+
+**Public endpoints (for reference)**
+- Direct (8080): `http://13.222.58.121:8080/convert?lbs=150`
 - Via NGINX (80): `http://13.222.58.121/convert?lbs=150`
-- HTTPS: `https://13-222-58-121.sslip.io/convert?lbs=150` — I used the free hostname `13-222-58-121.sslip.io` (maps to `13.222.58.121`), which satisfies Let’s Encrypt’s hostname requirement, so a valid TLS certificate could be issued without buying a domain.
+- HTTPS (optional): `https://13-222-58-121.sslip.io/convert?lbs=150` — hostname maps to `13.222.58.121`, satisfying Let’s Encrypt’s hostname requirement.
 ---
 
 ## 8) Cleanup Note (Executed)
