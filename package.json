@@ -1,0 +1,13 @@
+{
+  "name": "project1-starter",
+  "version": "1.0.0",
+  "description": "Starter code for Project 1: EC2 REST Converter",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "morgan": "^1.10.0"
+  }
+}
