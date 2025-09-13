@@ -20,7 +20,7 @@ The goal of this project was to deploy a minimal REST service on AWS EC2 that co
 - Reverse proxy (optional): **NGINX** forwards requests on `:80` → `127.0.0.1:8080`.  
 - TLS (optional): **Certbot** issues a certificate for `13-222-58-121.sslip.io`.  
 
-**Security Groups**
+**Security Group Rule Summary**
 - SSH (22/tcp) restricted to my IP.  
 - Application (8080/tcp) open for demo only.  
 - HTTP (80) and HTTPS (443) open to the world for web access.  
@@ -83,17 +83,17 @@ The goal of this project was to deploy a minimal REST service on AWS EC2 that co
 ## 8) Cleanup Note
 
 - Closed Security Group ports 8080, 80, and 443  
-![Updated Security Group inbound rules](docs/screenshots/updated-sg.png)  
+![Updated Security Group inbound rules](screenshots/updated-sg.png)  
 *Figure 25: Security Group inbound rules after cleanup (only SSH open)*  
 
 - Terminated EC2 instance after project completion.  
-![Terminated EC2](docs/screenshots/terminated.png)  
+![Terminated EC2](screenshots/terminated.png)  
 *Figure 26: EC2 instance shown in terminated state*  
 
 - Deleted lab Key Pair and confirmed no Elastic IP was allocated.  
-![Deleted Key Pair](docs/screenshots/keydelete.png)  
+![Deleted Key Pair](screenshots/keydelete.png)  
 *Figure 27: AWS Console showing deleted project Key Pair (no Elastic IPs allocated)*  
 
 - Verified that no orphaned EBS volumes remain.  
-![Verified EBS volumes](docs/screenshots/volume.png)  
+![Verified EBS volumes](screenshots/volume.png)  
 *Figure 28: AWS Console confirming no remaining EBS volumes in this region*  
