@@ -171,6 +171,19 @@ curl "https://13-222-58-121.sslip.io/convert?lbs=0"     # 0.000
 
 ---
 
+## Cleanup (Cost Hygiene)
+
+> **Service status:** Project resources was cleaned up. Screenshots in `screenshots/` show correct behavior.
+
+### What I cleaned up
+- Closed inbound ports **8080/80/443** in the Security Group (SSH 22 only from my IP).
+- Terminated the EC2 instance (screenshot added in design.md).
+- Deleted the project **Key Pair** (screenshot added in design.md).
+- Verified **no orphaned EBS volumes** remain (screenshot added in design.md).
+- No Elastic IP was allocated.
+
+---
+
 ## Screenshots
 
 ### API - with Curl
@@ -263,3 +276,6 @@ curl "https://13-222-58-121.sslip.io/convert?lbs=0"     # 0.000
 ### User
 ![User](screenshots/ec2user.png)  
 *Figure 24: Service running under non-root ec2-user account*  
+
+
+
