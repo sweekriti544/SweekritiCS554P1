@@ -173,44 +173,93 @@ curl "https://13-222-58-121.sslip.io/convert?lbs=0"     # 0.000
 
 ## Screenshots
 
-> Put images in `screenshots/`. These exact filenames are referenced below—rename your actual screenshots to match or update the paths here.
-
 ### API - with Curl
-![Curl 200 (lbs=150)](screenshots/curl.png)
+![Curl 200 (lbs=150)](screenshots/curl.png)  
+*Figure 1: curl request showing successful conversion (lbs=150 → kg)*  
 
+---
 
 ### API — with port 8080
-![Postman 200 (lbs=0)](screenshots/postman-8080-0.png)
-![Postman 200 (lbs=150)](screenshots/postman-8080-150.png)
-![Postman 200 (lbs=0.1)](screenshots/postman-8080-0.1.png)
-![Postman 404 (missing)](screenshots/postman-8080-404.png)
-![Postman 422 (negative)](screenshots/postman-8080-422.png)
-![Postman 400 (NaN)](screenshots/postman-8080-400.png)
+![Postman 200 (lbs=0)](screenshots/postman-8080-0.png)  
+*Figure 2: Postman request (lbs=0 → 0.000 kg, 200 OK)*  
 
+![Postman 200 (lbs=150)](screenshots/postman-8080-150.png)  
+*Figure 3: Postman request (lbs=150 → 68.039 kg, 200 OK)*  
+
+![Postman 200 (lbs=0.1)](screenshots/postman-8080-0.1.png)  
+*Figure 4: Postman request (lbs=0.1 → 0.045 kg, 200 OK)*  
+
+![Postman 404 (missing)](screenshots/postman-8080-404.png)  
+*Figure 5: Postman error response (missing param, 404)*  
+
+![Postman 422 (negative)](screenshots/postman-8080-422.png)  
+*Figure 6: Postman error response (negative input, 422)*  
+
+![Postman 400 (NaN)](screenshots/postman-8080-400.png)  
+*Figure 7: Postman error response (NaN input, 400)*  
+
+---
 
 ### API — via NGINX on port 80
-![Postman 200 on :80(lbs=0)](screenshots/postman-80-0.png)
-![Postman 200 on :80(lbs=150)](screenshots/postman-80-150.png)
-![Postman 200 on :80(lbs=0.1)](screenshots/postman-80-0.1.png)
-![Postman 404 on :80(missing)](screenshots/postman-80-404.png)
-![Postman 422 on :80(negative)](screenshots/postman-80-422.png)
-![Postman 400 on :80(NaN)](screenshots/postman-80-400.png)
+![Postman 200 on :80(lbs=0)](screenshots/postman-80-0.png)  
+*Figure 8: NGINX proxy request (lbs=0 → 0.000 kg, 200 OK)*  
+
+![Postman 200 on :80(lbs=150)](screenshots/postman-80-150.png)  
+*Figure 9: NGINX proxy request (lbs=150 → 68.039 kg, 200 OK)*  
+
+![Postman 200 on :80(lbs=0.1)](screenshots/postman-80-0.1.png)  
+*Figure 10: NGINX proxy request (lbs=0.1 → 0.045 kg, 200 OK)*  
+
+![Postman 404 on :80(missing)](screenshots/postman-80-404.png)  
+*Figure 11: NGINX proxy error (missing param, 404)*  
+
+![Postman 422 on :80(negative)](screenshots/postman-80-422.png)  
+*Figure 12: NGINX proxy error (negative input, 422)*  
+
+![Postman 400 on :80(NaN)](screenshots/postman-80-400.png)  
+*Figure 13: NGINX proxy error (NaN input, 400)*  
+
+---
 
 ### API — HTTPS (sslip.io)
-![HTTPS 200(lbs=0)](screenshots/postman-https-0.png)
-![HTTPS 200(lbs=150)](screenshots/postman-https-150.png)
-![HTTPS 200(lbs=0.1)](screenshots/postman-https-0.1.png)
-![HTTPS 400(missing)](screenshots/postman-https-404.png)
-![HTTPS 422(negative)](screenshots/postman-https-422.png)
-![HTTPS 400(NaN)](screenshots/postman-https-400.png)
+![HTTPS 200(lbs=0)](screenshots/postman-https-0.png)  
+*Figure 14: HTTPS request (lbs=0 → 0.000 kg, 200 OK)*  
+
+![HTTPS 200(lbs=150)](screenshots/postman-https-150.png)  
+*Figure 15: HTTPS request (lbs=150 → 68.039 kg, 200 OK)*  
+
+![HTTPS 200(lbs=0.1)](screenshots/postman-https-0.1.png)  
+*Figure 16: HTTPS request (lbs=0.1 → 0.045 kg, 200 OK)*  
+
+![HTTPS 400(missing)](screenshots/postman-https-404.png)  
+*Figure 17: HTTPS error (missing param, 400)*  
+
+![HTTPS 422(negative)](screenshots/postman-https-422.png)  
+*Figure 18: HTTPS error (negative input, 422)*  
+
+![HTTPS 400(NaN)](screenshots/postman-https-400.png)  
+*Figure 19: HTTPS error (NaN input, 400)*  
+
+---
 
 ### Service & Logs (EC2)
-![systemctl status p1](screenshots/systemctl-status-p1.png)
-![journalctl recent](screenshots/journalctl-recent.png)
+![systemctl status p1](screenshots/systemctl-status-p1.png)  
+*Figure 20: systemctl showing service active (running)*  
+
+![journalctl recent](screenshots/journalctl-recent.png)  
+*Figure 21: journalctl logs of recent requests*  
+
+---
 
 ### AWS Console
-![Security Group inbound rules](docs/screenshots/sg-inbound-rules.png)
-![Instance summary](docs/screenshots/instance-summary.png)
+![Security Group inbound rules](screenshots/sg-inbound-rules.png)  
+*Figure 22: Security Group inbound rules before cleanup*  
+
+![Instance summary](screenshots/instance-summary.png)  
+*Figure 23: AWS EC2 instance summary*  
+
+---
 
 ### User
-![User](docs/screenshots/ec2user.png)
+![User](screenshots/ec2user.png)  
+*Figure 24: Service running under non-root ec2-user account*  
