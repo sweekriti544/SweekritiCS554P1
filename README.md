@@ -17,7 +17,7 @@ A minimal REST API on AWS EC2 that converts pounds (lbs) to kilograms (kg).
 - **Via NGINX (80):** `http://13.222.58.121/convert?lbs=150`  
 - **HTTPS (extra credit):** `https://13-222-58-121.sslip.io/convert?lbs=150`
 
-> `13-222-58-121.sslip.io` resolves to the EC2 IP so a valid Let’s Encrypt cert can be issued without buying a domain.
+I used the free hostname 13-222-58-121.sslip.io from sslip.io, which automatically resolves to 13.222.58.121; this met Let’s Encrypt’s hostname requirement and allowed me to issue a valid TLS certificate without purchasing a domain.
 
 ---
 
