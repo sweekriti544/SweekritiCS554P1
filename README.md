@@ -44,7 +44,7 @@ A minimal REST API on AWS EC2 that converts pounds (lbs) to kilograms (kg).
 
 ## Setup — Install → Run → Test
 
-### 0) Connect to EC2 (WSL method used)
+### 1) Connect to EC2 (WSL method used)
 
 ```bash
 mkdir -p ~/.ssh
@@ -53,14 +53,14 @@ chmod 400 ~/.ssh/p1-key.pem
 ssh -i ~/.ssh/p1-key.pem ec2-user@13.222.58.121
 ```
 
-### 1) Install runtime on EC2
+### 2) Install runtime on EC2
 
 ```bash
 sudo yum -y update
 sudo yum -y install nodejs git nginx
 ```
 
-### 2) App folder + dependencies
+### 3) App folder + dependencies
 
 ```bash
 mkdir -p ~/p1 && cd ~/p1
@@ -68,7 +68,7 @@ mkdir -p ~/p1 && cd ~/p1
 npm install
 ```
 
-### 3) Quick sanity test (foreground)
+### 4) Start service manually and curl-test
 
 ```bash
 node server.js
@@ -77,7 +77,7 @@ curl -v 'http://127.0.0.1:8080/convert?lbs=150'
 # Ctrl+C to stop the foreground node
 ```
 
-### 4) Run reliably as a service (systemd)
+### 5) Run as a Service (systemd)
 
 ```bash
 sudo bash -c 'cat >/etc/systemd/system/p1.service <<"UNIT"
@@ -99,15 +99,15 @@ sudo systemctl enable --now p1
 sudo systemctl status p1 --no-pager
 ```
 
-### 5) Expose externally (did all three methods)
+### 6) Expose externally (did all three methods)
 
-**A) Direct 8080 (for 8080 screenshots)**  
+**A) Direct 8080**  
 EC2 **Security Group → Inbound rules** → add **Custom TCP 8080** from **My IP**.
 ```bash
 curl "http://13.222.58.121:8080/convert?lbs=150"
 ```
 
-**B) NGINX on 80 (clean URL)**
+**B) NGINX on 80**
 
 ```bash
 sudo bash -lc 'cat > /etc/nginx/conf.d/p1.conf << "EOF"
