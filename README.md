@@ -98,6 +98,16 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now p1
 sudo systemctl status p1 --no-pager
 ```
+![Status: p1.service auto-started (listening on 8080)](screenshots/systemctlstatus.png)
+
+### Reboot verification (systemd auto-start)
+Reboot the instance and confirm the service starts on boot:
+```bash
+sudo reboot
+```
+# reconnect via SSH, then:
+journalctl -u p1 -b --no-pager | tail -n 80
+![Reboot: p1.service auto-started (listening on 8080)](screenshots/systemctlreboot.png)
 
 ### 6) Expose externally (did all three methods)
 

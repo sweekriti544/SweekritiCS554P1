@@ -58,6 +58,7 @@ The service exposes a single route, `GET /convert?lbs=<number>`. It computes kil
 - **Local EC2 tests:** verified with curl against `127.0.0.1:8080`.  
 - **External tests:** curl and Postman against the public IP confirmed both valid and error cases.  
 - **Reliability:** `systemctl status p1` confirmed service was active; `journalctl` logs verified request handling.  
+- **Reboot test:** After `sudo reboot`, reconnected via SSH and confirmed `p1.service` started automatically; `journalctl -u p1 -b` shows “Started p1.service” and “listening on 8080” (see screenshot in readme.md).
 - **Screenshots:** included in README to document successful responses over 8080, 80, and HTTPS.  
 
 ---
