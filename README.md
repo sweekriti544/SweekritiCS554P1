@@ -56,8 +56,8 @@ ssh -i ~/.ssh/p1-key.pem ec2-user@13.222.58.121
 ### 2) Install runtime on EC2
 
 ```bash
-sudo yum -y update
-sudo yum -y install nodejs git nginx
+sudo dnf -y update
+sudo dnf -y install nodejs git nginx
 ```
 
 ### 3) App folder + dependencies
@@ -140,7 +140,7 @@ curl "http://13.222.58.121/convert?lbs=150"
 **C) HTTPS via Let’s Encrypt**  
 Open SG for **HTTP 80** and **HTTPS 443** to **Anywhere-IPv4 (0.0.0.0/0)** during issuance.
 ```bash
-sudo yum -y install certbot python3-certbot-nginx
+sudo dnf -y install certbot python3-certbot-nginx
 sudo certbot --nginx -d 13-222-58-121.sslip.io
 curl "https://13-222-58-121.sslip.io/convert?lbs=150"
 ```
